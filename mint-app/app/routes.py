@@ -161,6 +161,7 @@ def determine_category(seller):
     except:
         return "Uncategorized"
 
+
 @app.route('/link_account', methods=['GET', 'POST'])
 def link_account():
 
