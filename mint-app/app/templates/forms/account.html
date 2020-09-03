@@ -1,0 +1,39 @@
+<p>Return to the <a href="{{ url_for('overview') }}">Overview</a></p>
+<h1>Add Account</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.institution.label }}<br>
+        {{ form.institution(list="id_datalist") }}
+        <datalist id="id_datalist">
+        {% for institution in institutions %}
+        <option value={{ institution }}>
+        {% endfor %}
+        </datalist>
+        {% for error in form.institution.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.account_name.label }}<br>
+        {{ form.account_name(size=32) }}<br>
+        {% for error in form.account_name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.login.label }}<br>
+        {{ form.login(size=32) }}<br>
+        {% for error in form.login.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password(size=32) }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>

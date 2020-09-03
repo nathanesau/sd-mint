@@ -1,0 +1,38 @@
+<p>Return to the <a href="{{ url_for('overview') }}">Overview</a></p>
+<h1>Edit Category</h1>
+
+<p>Transaction Info:</p>
+
+<table style="border: 1px solid black;">
+    <tr>
+        <th style="border: 1px solid black;">Account Id</th>
+        <th style="border: 1px solid black;">Transaction Date</th>
+        <th style="border: 1px solid black;">Transaction Seller</th>
+        <th style="border: 1px solid black;">Transaction Amount</th>
+        <th style="border: 1px solid black;">Category</th>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black;">{{ transaction.account_third_party_id }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_date }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_seller }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_amount }}</td>
+        <td style="border: 1px solid black;">{{ transaction.category }}</td>
+    </tr>
+</table>
+
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        <p>New Category: </p>
+        {{ form.category(list="id_datalist") }}
+        <datalist id="id_datalist">
+        {% for category in categories %}
+        <option value={{ category }}>
+        {% endfor %}
+        </datalist>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>

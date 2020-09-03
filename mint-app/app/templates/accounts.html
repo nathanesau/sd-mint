@@ -1,0 +1,29 @@
+<h3>
+    Accounts
+    <button type="button" onclick="window.location.href='/link_account'">+ Add account</button>
+</h3>
+
+<p>
+{% if accounts and accounts.count() > 0 %}
+<table style="border: 1px solid black;">
+    <tr>
+        <th style="border: 1px solid black;">Account Id</th>
+        <th style="border: 1px solid black;">Account Institution</th>
+        <th style="border: 1px solid black;">Account Name</th>
+        <th style="border: 1px solid black;">Account Balance</th>
+        <th style="border: 1px solid black;">Last Update</th>
+    </tr>
+    {% for account in accounts %}
+    <tr>
+        <td style="border: 1px solid black;">{{ account.id }}</td>
+        <td style="border: 1px solid black;">{{ account.account_institution }}</td>
+        <td style="border: 1px solid black;">{{ account.account_name }}</td>
+        <td style="border: 1px solid black;">{{ account.account_balance }}</td>
+        <td style="border: 1px solid black;">{{ account.last_update }} <button type="button" onclick="window.location.href='{{ url_for('refresh_account', account_id=account.id) }}';">Refresh</button></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+No account information available.
+{% endif %}
+</p>

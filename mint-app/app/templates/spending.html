@@ -1,0 +1,30 @@
+<h3>
+    Spending
+</h3>
+
+<p>
+{% if spending %}
+</p>
+<table style="border: 1px solid black;">
+    <tr>
+        <th style="border: 1px solid black;">Month</th>
+        <th style="border: 1px solid black;">Category</th>
+        <th style="border: 1px solid black;">Amount Spent</th>
+    </tr>
+    {% for spend in spending %}
+    <tr>
+        <td style="border: 1px solid black;">{{ spend.month_year }}</td>
+        {% if spend.category == 'Total' %}
+        <td style="border: 1px solid black;"><b>{{ spend.category }}</b></td>
+        <td style="border: 1px solid black;"><b>{{ spend.amount }}</b></td>
+        {% else %}
+        <td style="border: 1px solid black;">{{ spend.category }}</td>
+        <td style="border: 1px solid black;">{{ spend.amount }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{%else %}
+No spending information available.
+{% endif %}
+</p>

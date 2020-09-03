@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Home</h1>
+
+    {% if current_user.is_anonymous %}
+        {% include 'forms/login.html' %}
+    {% else %}
+    <p>Hi, {{ current_user.username }}.</p>
+        {% include 'summary.html' %}
+    {% endif %}
+
+{% endblock %}

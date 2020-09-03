@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Overview</h1>
+
+    {% if current_user.is_anonymous %}
+        {% include 'forms/login.html' %}
+    {% else %}
+        {% include 'accounts.html' %}
+        {% include 'transactions.html' %}
+        {% include 'spending.html' %}
+    {% endif %}
+
+{% endblock %}

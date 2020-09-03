@@ -1,0 +1,30 @@
+<h3>
+    Transactions
+</h3>
+
+<p>
+{% if transactions and transactions.count() > 0 %}
+<table style="border: 1px solid black;">
+    <tr>
+        <th style="border: 1px solid black;">Account Id</th>
+        <th style="border: 1px solid black;">Transaction Date</th>
+        <th style="border: 1px solid black;">Transaction Seller</th>
+        <th style="border: 1px solid black;">Transaction Amount</th>
+        <th style="border: 1px solid black;">Category</th>
+        <th style="border: 1px solid black;">Customize</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td style="border: 1px solid black;">{{ transaction.account_id }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_date }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_seller }}</td>
+        <td style="border: 1px solid black;">{{ transaction.transaction_amount }}</td>
+        <td style="border: 1px solid black;">{{ transaction.category }}</td>
+        <td style="border: 1px solid black;"><button type="button" onclick="window.location.href='{{ url_for('update_category', transaction_id=transaction.id) }}';">Edit Category</button> </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+No transactions available.
+{% endif %}
+</p>
