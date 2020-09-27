@@ -6,7 +6,7 @@ I have provided some comments in this README on how to scale the design.
 
 Based on suggestions in https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md.
 
-Site should be live at: http://mint.freeddns.org/.
+Site should be live at: https://mint.freeddns.org/.
 
 ## Design
 
