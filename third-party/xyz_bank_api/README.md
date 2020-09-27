@@ -12,7 +12,7 @@ API tests:
 
 ```bash
 # /api/v1/login
-curl "http://localhost:5002/api/v1/login?account_login=123456781234&account_password=xyz_bank_nathan"
+curl "http://nathanesau.mint.io:5002/api/v1/login?account_login=123456781234&account_password=xyz_bank_nathan"
 
 # /api/v1/account
 curl "http://localhost:5002/api/v1/account?account_login=123456781234&account_password_hash=pbkdf2:sha256:150000\$FRb1SnZg\$6174439c41665d33166cae4ce22a5c080dbcdd73813712f1123180be08271188"

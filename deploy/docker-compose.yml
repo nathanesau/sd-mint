@@ -1,0 +1,50 @@
+version: '2.1'
+
+services:
+  mint-redis:
+    image: mint-redis:latest
+    container_name: mint-redis
+    restart: always
+    environment:
+      - REDIS_PASS=${REDIS_PASS}
+    ports:
+      - 6379:6379
+    volumes:
+      - /root/dumps:/data
+    command: redis-server --requirepass ${REDIS_PASS}
+    mem_limit: 100m
+
+  abc_bank_api:
+    image: abc_bank_api:latest
+    container_name: abc_bank_api
+    restart: always
+    ports:
+      - 5001:5001
+  
+  xyz_bank_api:
+    image: xyz_bank_api:latest
+    container_name: xyz_bank_api
+    restart: always
+    ports:
+      - 5002:5002
+  
+  xyz_trade_api:
+    image: xyz_trade_api:latest
+    container_name: xyz_trade_api
+    restart: always
+    ports:
+      - 5003:5003
+
+  mint-app:
+    image: mint-app:latest
+    container_name: mint-app
+    restart: always
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASS=${REDIS_PASS}
+      - ABC_BANK_API_URL=${ABC_BANK_API_URL}
+      - XYZ_BANK_API_URL=${XYZ_BANK_API_URL}
+      - XYZ_TRADE_API_URL=${XYZ_TRADE_API_URL}
+    ports:
+      - 5000:5000
+ 

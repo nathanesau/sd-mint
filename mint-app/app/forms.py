@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
-from app.models import User, institutions, categories
+from app.models import User, categories
 
 
 class LoginForm(FlaskForm):
@@ -37,7 +37,7 @@ class AccountForm(FlaskForm):
     submit = SubmitField('Link Account')
 
     def validate_institution(self, institution):
-        if institution.data not in institutions:
+        if institution.data not in ["abc_bank", "xyz_bank", "xyz_trade"]:
             raise ValidationError('Please use a different institution.')
 
 

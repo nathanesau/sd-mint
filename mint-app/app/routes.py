@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from flask import request, abort, jsonify, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Account, Transaction, institutions, categories, Spending
+from app.models import User, Account, Transaction, categories, Spending
 from app.forms import LoginForm, RegistrationForm, AccountForm, CategoryForm
 from collections import OrderedDict
 import redis
@@ -32,7 +32,7 @@ def index():
 
         if user is None or not check_password_hash(user.password_hash, form.password.data):
             flash('Invalid username or password')
-            return
+            return render_template('index.html', form=form)
 
         login_user(user, remember=form.remember_me.data)
 
@@ -154,7 +154,8 @@ def get_thirdparty_transactions(api_url, account_id):
 
 
 def determine_category(seller):
-    r = redis.Redis()
+    r = redis.StrictRedis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'],
+        db=0, password=app.config['REDIS_PASS'])
     try:
         category = r.get(seller)
         return "Uncategorized" if not category else category.decode('utf-8')
@@ -170,7 +171,7 @@ def link_account():
     if form.validate_on_submit():
 
         # validate third party credentials
-        api_url = institutions.get(form.institution.data)
+        api_url = app.config['THIRD_PARTY_API_URL'][form.institution.data]
         login = form.login.data
         pwd = form.password.data
 
@@ -179,19 +180,19 @@ def link_account():
         except:
             institution = form.institution.data
             flash("Couldn't connect to third-party-api (institution = {})".format(institution))
-            return render_template('account.html', form=form, institutions=institutions.keys())
+            return render_template('account.html', form=form, institutions=["abc_bank", "xyz_bank", "xyz_trade"])
 
         if response.status_code == 400 or response.status_code == 401:
             flash("Invalid login or password.")
-            return render_template('account.html', form=form, institutions=institutions.keys())
+            return render_template('account.html', form=form, institutions=["abc_bank", "xyz_bank", "xyz_trade"])
 
         # get third party account info
-        api_url = institutions.get(form.institution.data)
+        api_url = app.config['THIRD_PARTY_API_URL'][form.institution.data]
         account_login, account_password_hash = response.json().values()
         account_resp = get_thirdparty_accountinfo(api_url, account_login, account_password_hash)
 
         # get third party transactions
-        api_url = institutions.get(form.institution.data)
+        api_url = app.config['THIRD_PARTY_API_URL'][form.institution.data]
         transactions_resp = get_thirdparty_transactions(api_url, account_resp.json().get("id"))
 
         # add account record
@@ -199,7 +200,7 @@ def link_account():
                           last_update=datetime.now(),
                           account_institution=form.institution.data,
                           account_name=form.account_name.data,
-                          account_url=institutions.get(form.institution.data),
+                          account_url=app.config['THIRD_PARTY_API_URL'][form.institution.data],
                           account_login=account_login,
                           account_password_hash=account_password_hash,
                           account_balance=account_resp.json().get("balance"),
@@ -227,7 +228,7 @@ def link_account():
 
         return redirect(url_for('overview'))
 
-    return render_template('account.html', form=form, institutions=institutions.keys())
+    return render_template('account.html', form=form, institutions=["abc_bank", "xyz_bank", "xyz_trade"])
 
 
 @app.route('/update_category/<transaction_id>', methods=['GET', 'POST'])
@@ -247,7 +248,7 @@ def update_category(transaction_id):
         flash("Updated transaction category to {}".format(category))
 
         return redirect(url_for('overview'))
-    
+
     return render_template('category.html', form=form, categories=categories, transaction=transaction)
 
 
@@ -294,7 +295,7 @@ def refresh_account(account_id):
                 account_id=account.id)
             db.session.add(transaction)
     db.session.commit()
-    flash("Refreshed account {} at {}".format(account, datetime.now()))
+    flash("Refreshed account {} at {}".format(account_id, datetime.now()))
     return overview()
 
 

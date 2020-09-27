@@ -3,13 +3,6 @@ from flask_login import UserMixin
 from hashlib import md5
 
 
-institutions = {
-    "abc_bank": "http://localhost:5001/api/v1",
-    "xyz_bank": "http://localhost:5002/api/v1",
-    "xyz_trade": "http://localhost:5003/api/v1"
-}
-
-
 categories = {
     "Auto-Transport": "",
     "Bills-Utilities": "",

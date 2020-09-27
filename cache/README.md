@@ -3,26 +3,19 @@
 running postgres docker for cache:
 
 ```bash
-docker run -p 6379:6379 --name mint-redis -d redis
+docker run -p 6379:6379 --name mint-redis -v /root/dumps:/data -d redis redis-server --requirepass yourpass
 ```
 
-## Info
-
-Design of cache:
-
-* Populate cache with ``categories.json`` on startup
+to connect to image with python:
 
 ```python
-import json
 import redis
+r = redis.StrictRedis(host="165.22.234.253", port=6379, db=0, password='yourpass')
+```
 
-if __name__ == "__main__":
-    r = redis.Redis("localhost", 6379)
-    with open('cache/categories.json') as f:
-        categories = json.load(f)
-        for seller, category in categories.get("seller_category").items():
-            r.set(seller, category)
-    r.close()
+## additional information
+
+
 
 * Update ``categories.json`` periodically using category service
 * Category service running as background scheduler (part of mint-app)

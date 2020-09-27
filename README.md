@@ -6,9 +6,11 @@ I have provided some comments in this README on how to scale the design.
 
 Based on suggestions in https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/mint/README.md.
 
+Site should be live at: http://mint.freeddns.org/.
+
 ## Design
 
-![](basic_design.png)
+![](design.png)
 
 ## Frontend
 
@@ -24,3 +26,7 @@ Based on suggestions in https://github.com/donnemartin/system-design-primer/blob
     * xyz_trade_api written using ``flask`` (port 5003)
 * sqlite used for database 
 * redis cache running using ``docker`` (port 6379)
+
+## DNS entries
+
+Use https://www.dynu.com/ for freedns entries.

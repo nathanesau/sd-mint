@@ -1,0 +1,11 @@
+[Unit]
+Description=service to backup redis.
+
+[Service]
+Type=simple
+User=root
+Environment="REDIS_PASS=yourpass"
+ExecStart=/usr/bin/python3.8 /root/sd-mint/services/backup_redis/backup_redis.py
+
+[Install]
+WantedBy=multi-user.target

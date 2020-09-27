@@ -14,10 +14,13 @@ app.config['SCHEDULER_API_ENABLED'] = True
 app.config['JOBS'] = [{'id':'cs','func':'app.jobs:cs_task','trigger':'interval','seconds':30}]
 app.config['SECRET_KEY'] = 'vZ9YVje1aU'
 app.config['THIRD_PARTY_API_URL'] = {
-    "abc_bank": "http://localhost:5001/api/v1",
-    "xyz_bank": "http://localhost:5002/api/v1",
-    "xyz_trade_api": "http://localhost:5003/api/v1"
+    "abc_bank": os.environ["ABC_BANK_API_URL"],
+    "xyz_bank": os.environ["XYZ_BANK_API_URL"],
+    "xyz_trade": os.environ["XYZ_TRADE_API_URL"]
 }
+app.config['REDIS_HOST'] = os.environ["REDIS_HOST"]
+app.config['REDIS_PASS'] = os.environ['REDIS_PASS']
+app.config['REDIS_PORT'] = 6379
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
