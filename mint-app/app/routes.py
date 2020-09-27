@@ -57,7 +57,7 @@ def login():
 
         if user is None or not check_password_hash(user.password_hash, form.password.data):
             flash('Invalid username or password')
-            return
+            return render_template('login.html', title='Sign In', form=form)
 
         login_user(user, remember=form.remember_me.data)
 
@@ -92,7 +92,7 @@ def register():
 
         flash('Congratulations, you are now a registered user!')
 
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
 
     return render_template('register.html', title='Register', form=form)
 
